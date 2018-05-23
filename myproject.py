@@ -4,44 +4,46 @@ import requests
 import json
 import pdfkit
 import time
+import webbrowser
 
 PLACES = [
-    {'state': 'Alabama', 'city': 'Phenix-City'},
+    #{'state': 'Alabama', 'city': 'Phenix-City'},
     {'state': 'Georgia', 'city': 'Columbus'}
 ]
 
 
 def search_person(first, last, state, city):
-    url = 'http://www.spokeo.com/' + first + '-' + last + '/' + state + '/' + city
-    r = requests.get(url)
-    return r
+    url = "https://www.spokeo.com/" + first + \
+        "-" + last + "/" + state + "/" + city + "/"
+
+    webbrowser.open_new(url)
+    # return url
 
 
-def get_data(data):
-    data = json.loads(data)
-    info = data['people']
-    results = []
-    for item in info:
-        d = {'name': item['name'],      'dob': item['dob'],
-             'age': item['age'],       'locations': item['locations'],
-             'longitude': item['longitude'], 'includes': item['includes'],
-             'relatives': item['relatives'], 'latitude': item['latitude'],
-             'aliases': item['aliases']}
-        results.append(d)
-    return results
+# def get_data(data):
+#    data = json.loads(data)
+#    info = data['people']
+#    results = []
+#    for item in info:
+#        d = {'name': item['name'],      'dob': item['dob'],
+#             'age': item['age'],       'locations': item['locations'],
+#             'longitude': item['longitude'], 'includes': item['includes'],
+#             'relatives': item['relatives'], 'latitude': item['latitude'],
+#             'aliases': item['aliases']}
+#        results.append(d)
+#    return results
 
 
-def query_person(first, last):
-    for place in PLACES:
-        r = search_person(first, last, place['state'], place['city'])
-        soup = BeautifulSoup(r.text)
-        results = []
-        for script in soup.find_all('script'):
-            if 'var search = {' in script.text:
-                script_string = str(script)
-                results += (
-                    get_data(script_string[script_string.index('{'): -10]))
-        return results
+# def query_person(first, last):
+#    for place in PLACES:
+#        r = search_person(first, last, place['state'], place['city'])
+#        soup = BeautifulSoup(r.text)
+#        results = []
+#        for script in soup.find_all('script'):
+#            if 'var search = {' in script.text:
+#                script_string = str(script)
+#                get_data(script_string[script_string.index('{'): -10])
+#        return results
 
 
 application = Flask(__name__)
@@ -64,7 +66,12 @@ def social_eng():
     if request.method == "POST":
         first = request.form["firstname"].split()[0].capitalize()
         last = request.form["lastname"].split()[0].capitalize()
-        return render_template('socialengresults.html', data=query_person(first, last))
+        state = request.form["state"].capitalize()
+        city = request.form["city"].capitalize()
+        # url = search_person(first, last, "Georgia", "Columbus")
+        search_person(first, last, state, city)
+
+        return render_template('socialengresults.html')
 
 
 @application.route('/mobile', methods=["GET"])
@@ -114,7 +121,6 @@ def get_info():
 
 @application.route('/completion', methods=["GET", "POST"])
 def completion():
-
     options = {
         'page-size': 'Legal',
         'margin-top': '0.75in',

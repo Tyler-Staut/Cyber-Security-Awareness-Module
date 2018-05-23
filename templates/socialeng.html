@@ -310,7 +310,7 @@
                                 </div>
 
                                 <div class="form-check" style="text-align: center;">
-                                    <button class="submit" id="fakeWebsitesBtn""> Submit! </button>
+                                    <button class="submit" id="fakeWebsitesBtn"> Submit! </button>
                                 </div>
 
 
@@ -410,6 +410,8 @@
                                 <fieldset class="form-group" style="padding-bottom:10px;">
                                     <input name="firstname" type="text" class="form-control" placeholder="First Name" required>
                                     <input name="lastname" type="text" class="form-control" placeholder="Last Name" required>
+                                    <input name="state" type="text" class="form-control" placeholder="State" required>
+                                    <input name="city" type="text" class="form-control" placeholder="City" required>
                                 </fieldset>
                                 <input id="clickClick" value="Submit" type="submit">
                             </form>
@@ -456,19 +458,19 @@
     // Get the button that opens the email modal
     var emailBtn = document.getElementById("emailBtn");
 
-    // When the user clicks on the button, open the modal 
+    // When the user clicks on the button, open the modal
     emailBtn.onclick = function() {
         emailModal.style.display = "block";
         checkQuestion1();
     }
-    
+
     // Get the email modal
     var fakeWebsitesModal = document.getElementById('fakeWebsitesModal');
 
     // Get the button that opens the email modal
     var fakeWebsitesBtn = document.getElementById("fakeWebsitesBtn");
 
-    // When the user clicks on the button, open the modal 
+    // When the user clicks on the button, open the modal
     fakeWebsitesBtn.onclick = function() {
         fakeWebsitesModal.style.display = "block";
         checkQuestion2();
@@ -479,7 +481,7 @@
     fakeWebsitesCloseBtn.onclick = function() {
         fakeWebsitesModal.style.display = "none";
     }
-    
+
     </script>
 
 </body>
